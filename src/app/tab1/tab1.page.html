@@ -1,0 +1,44 @@
+<ion-header class="header">
+  <ion-toolbar class="header">
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu" slot="start"></ion-menu-button>
+    </ion-buttons>
+    <ion-title style="text-align: center;" slot="start">Map Control</ion-title>
+      <ion-chip slot="end"  (click)="openWin('profil')" color="light">
+        <ion-label >Profil</ion-label>
+        <ion-icon name="person-circle" size="large"></ion-icon>
+      </ion-chip>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <center class="img">
+    <ion-img src="..\assets\logo.png" style="width: 60%;opacity: 60%;"></ion-img>  
+  </center>
+  <ion-footer class="btns">
+  <ion-item color="primary" *ngIf="admin==false || profil==null" (click)="openWin('article')" class="btn">
+    <ion-label slot="end">
+      Nouvel article
+    </ion-label>
+    <ion-icon name="add" color="light" size="large" slot="start"></ion-icon>
+  </ion-item>
+
+  <ion-item color="primary" class="btn" (click)="fx.openPage('list-article','')">
+    <ion-label slot="end">
+      Mouvément Stock
+    </ion-label>
+    <ion-icon name="pencil" color="light" size="large" slot="start"></ion-icon>
+  </ion-item>
+  
+  <ion-item color="primary" *ngIf="admin==true || profil==null" class="btn" (click)="openWin('house')">
+    <ion-label slot="end">
+      Nouvelle Maison & Manager
+    </ion-label>
+    <ion-icon name="card" color="light" size="large" slot="start"></ion-icon>
+  </ion-item>
+    
+</ion-footer>
+<app-explore-container name="Tab 2 page" *ngIf="options==false"></app-explore-container>
+
+</ion-content>

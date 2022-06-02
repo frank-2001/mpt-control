@@ -1,0 +1,36 @@
+ion-content{
+    // --offset-top: 50 !important;
+    --background:blue;
+    --background:url('../../assets/tchno.jpg')center repeat;
+
+    .btns{
+        margin-top: 5%;
+        padding: 50px 10px 50px 10px;
+        border-radius: 0 50px 0 50px;
+        background: rgba(0, 0, 0, 0.37);
+        .btn{
+            margin-top: 10px;
+            border-radius: 15px;
+        }  
+    }
+    .img{
+        padding: 30px;
+        // height: 60%;
+        // text-align: center;
+        // color: whitesmoke;
+        // padding: 10%;
+        // background:url(../assets/logo.jpg) ;
+    }
+}
+.head{
+    padding:5%;
+    border-radius: 0 0 28px 28px;
+    background: white;
+}
+.header{
+    --background:rgba(0, 0, 0, 0.466);
+    color: white;
+}
+ion-footer{
+    --background:blue
+}

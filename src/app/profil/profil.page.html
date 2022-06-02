@@ -1,0 +1,70 @@
+<ion-content>
+  <ion-item lines="full">
+    <ion-chip slot="end" color="light" (click)="fx.dismiss()">
+      <ion-label>Fermer</ion-label>
+      <ion-icon name="close" color="danger"></ion-icon>
+    </ion-chip>
+  </ion-item>
+  <ion-card color="danger" class="accountDelete" *ngIf="myAc==true">
+    <ion-icon name="warning" size="large"></ion-icon><br>
+    <ion-label class="bigTxt">Votre compte a été supprimé du serveur veuiller contacter l'administrateur de la maison pour plus d'information</ion-label>
+  </ion-card>
+
+  <ion-card class="sub" *ngIf="sub==false">
+    <ion-icon name="warning" color="danger" size="large"></ion-icon><br>
+    Chers Client votre abonnement a l'application à expiré<br>
+    Vos dernieres données ne serons pas enligne, 48h apres l'expiration de votre abonnement<br>
+    Veuillez souscire a un abonnement a seulement 10$ pour un mois.<br>
+    Airtel Money : +243 973 472 538 <br>
+    Après le transfert envoi votre message de confirmation du transfert, au meme Numero par sms ou par whatsapp ou appele le numero pour valider votre abonnement
+  </ion-card>
+  <ion-card class="sub" *ngIf="sub==true">
+    <ion-icon name="checkmark-circle" color="primary" size="large"></ion-icon><br>Merci pour votre confiance a nos service!
+  </ion-card>
+  <ion-card class="warning" *ngIf="alert==1">
+    <ion-icon name="warning" color="danger" size="large"></ion-icon><br>
+    Les données non enregistrer sur le cloud serons perdus!
+    <ion-button color="danger" (click)="dec()">Continuer</ion-button>
+    <ion-button color="primary" (click)="alert=0">Annuler</ion-button>
+  </ion-card>
+  <ion-card id="container">
+    <ion-item lines="full">
+      <ion-label slot="start" *ngIf="profil!=null">{{profil.name}}
+      </ion-label>
+      <ion-label slot="start" color="danger" *ngIf="profil==null">Non connecté</ion-label>
+      <ion-icon name="home" slot="end" color="primary"></ion-icon>
+    </ion-item>
+      <ion-grid class="btns">
+        <ion-row>
+        <ion-button color="warning" (click)="sendData()" (click)="hid1=1" [disabled]="profil==null || profil.logo!=null || hid1==1">
+          <ion-icon name="cloud" slot="start"></ion-icon> 
+          <ion-label slot="end" >Upload les donnes?</ion-label>
+        </ion-button>
+
+        </ion-row>
+        <ion-row>
+          <ion-button color="secondary" [disabled]="profil==null || profil.logo==null">
+          <ion-icon name="home" slot="start"></ion-icon>
+            <ion-label slot="end"  (click)="myHouse()"  (click)="account=1">Manager</ion-label> 
+          </ion-button>
+          <ion-button color="success" [disabled]="profil==null || profil.logo==null || hid==1" (click)="fx.update()" (click)="hid=1">
+          <ion-icon name="reload" slot="start"></ion-icon>
+          <ion-label slot="end">Actualiser</ion-label>  
+          </ion-button>
+          <ion-button color="danger"(click)="check()" [disabled]="profil==null">Deconnexion</ion-button>
+          
+        </ion-row>
+        </ion-grid>
+      
+    <p class="last" *ngIf="profil!=null && profil.logo!=null">Date d'expiration de votre abonnement {{profil.abonnement}}</p>
+  </ion-card>
+  <ion-card id="container" *ngIf="account==1">
+      <ion-title>Liste des comptes associer a tes maisons</ion-title>
+      <center *ngIf="loadX==0">Chargement.....</center>
+        <ion-item lines="full" *ngFor="let mh of accountH">
+          <ion-label slot="start"> <ion-icon name='person'></ion-icon>&nbsp; {{mh.name}} </ion-label>
+          <ion-label> <ion-icon name='key'></ion-icon>&nbsp;{{mh.password}}</ion-label>
+          <ion-icon name="trash" color="danger" slot="end" (click)="delManager(mh.id)"></ion-icon>
+        </ion-item>
+  </ion-card>
+</ion-content>

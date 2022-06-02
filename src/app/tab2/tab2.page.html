@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Stock
+    </ion-title>
+    <ion-icon name="reload" slot="end" size="large" color="primary" (click)="reload()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+<ion-grid class="table" *ngFor="let house of house">
+  <ion-row class="title">
+    <strong>{{house}}</strong>
+  </ion-row>
+  <ion-row class="headTable">
+    <ion-col size="4">Libele</ion-col>
+    <ion-col size="3">Entrer</ion-col>
+    <ion-col size="3">Sortie</ion-col>
+    <ion-col size="2">solde</ion-col>
+  </ion-row>
+<div *ngFor="let article of articles">
+  <ion-row class="row" *ngIf="article.house==house" >
+    <ion-col size="4">{{article.names}}</ion-col>
+    <ion-col size="3">{{article.entrer}}</ion-col>
+    <ion-col size="3">{{article.sortie}}</ion-col>
+    <ion-col size="2">{{article.entrer-article.sortie}}</ion-col>
+  </ion-row>
+</div>
+
+</ion-grid>
+</ion-content>

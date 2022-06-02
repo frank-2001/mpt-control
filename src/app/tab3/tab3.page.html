@@ -1,0 +1,134 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Caisse
+    </ion-title>
+    <ion-icon name="reload" color="primary" size="large" slot="end" (click)="getMouv()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+<ion-card>
+  <ion-chip color="primary" (click)="ramb=true">Credit &nbsp;<ion-badge color="danger">{{credit.length}}</ion-badge></ion-chip>
+  <ion-chip color="primary" (click)="entre=true" [disabled]="admin==true">Entrer caisse</ion-chip>
+  <ion-chip color="primary" (click)="sortie=true" [disabled]="admin==true">Sortie</ion-chip>
+</ion-card>  
+<ion-card *ngIf="ramb==true">
+<ion-list>
+  <center>
+    <ion-icon name="arrow-up" color="primary" (click)="ramb=false"></ion-icon>
+  </center>
+  <ion-item *ngFor="let cred of credit">
+              {{cred.time|date:'d/M/yy'}} - {{cred.names}} - {{cred.cout}} {{cred.devise}}
+              <br>
+              {{cred.libele}}
+              <ion-button slot="end" [disabled]="admin==true" (click)="encaisse(cred.id)">
+                Payé
+              </ion-button>
+  </ion-item>
+</ion-list>
+</ion-card>
+<ion-card *ngIf="entre==true">
+  <center>
+    <ion-icon name="arrow-up" color="primary" (click)="entre=false"></ion-icon>
+  </center>
+  <form>  
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pencil" color="primary" ></ion-icon> Montant de l'entrer </ion-label>
+      <ion-input type="number" [(ngModel)]="amount" name="nom"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pricetag" color="primary" ></ion-icon> Dévise </ion-label>
+      <ion-select  name="commune" [(ngModel)]="devise">
+        <ion-select-option value="$">$ (Dollars)</ion-select-option>
+        <ion-select-option value="Fc">Fc (Franc Congolais)</ion-select-option>
+      </ion-select>         
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pencil" color="primary" ></ion-icon> Libelé de l'entrer </ion-label>
+      <ion-input type="text" [(ngModel)]="libele" name="nom"></ion-input>
+    </ion-item>
+    <center>
+      <ion-button color="primary" (click)="saveEntrer(libele,amount,devise)" [disabled]='!amount || !devise || !libele'>Valider</ion-button>
+    </center>
+</form>
+</ion-card>
+<ion-card *ngIf="sortie==true">
+  <center>
+    <ion-icon name="arrow-up" color="primary" (click)="sortie=false"></ion-icon>
+  </center>
+  <form>  
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pencil" color="primary" ></ion-icon> Montant a sortir </ion-label>
+      <ion-input type="number" [(ngModel)]="amount" name="nom"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pricetag" color="primary" ></ion-icon> Dévise </ion-label>
+      <ion-select  name="commune" [(ngModel)]="devise">
+        <ion-select-option value="$">$ (Dollars)</ion-select-option>
+        <ion-select-option value="Fc">Fc (Franc Congolais)</ion-select-option>
+      </ion-select>         
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating"><ion-icon  name="pencil" color="primary" ></ion-icon> Libelé de la Sortie </ion-label>
+      <ion-input type="text" [(ngModel)]="libele" name="nom"></ion-input>
+    </ion-item>
+    <center>
+      <ion-button color="primary" (click)="saveSortie(libele,amount,devise)" [disabled]='!amount || !devise || !libele'>Valider</ion-button>
+    </center>
+</form>
+</ion-card>
+
+  <ion-grid class="table" style="border-top: solid 2px black;">
+    <ion-row class="row" style="margin-bottom: 10px;">
+      <ion-col size="6"><center>Total Caisse</center></ion-col>
+      <ion-col size="3" style="background: rgb(90, 90, 90);color:white"><strong>{{caisseAmountD-decaisseAmountD}} $</strong></ion-col>
+      <ion-col size="3" style="background: rgb(90, 90, 90);color:white"><strong>{{caisseAmountF-decaisseAmountF}} Fc</strong></ion-col>
+    </ion-row>
+
+    <ion-row class="headTable">
+      <ion-col size="2">Jour</ion-col>
+      <ion-col size="3">Libele</ion-col>
+      <ion-col size="2">Qte</ion-col>
+      <ion-col size="3">Cout</ion-col>
+      <ion-col size="2">Paie</ion-col>
+    </ion-row>
+    <div *ngFor="let h of houses" class="house">
+      <ion-row class="titleGrid">
+          {{h.names}}
+      </ion-row>
+      <div *ngFor="let m of mouv">
+        <ion-row class="row" *ngIf="m.house==h.names">
+          <ion-col size="2">{{m.time|date:'d/M/yy'}}</ion-col>
+          <ion-col size="3">{{m.action}} <strong>{{m.names}}</strong></ion-col>
+          <ion-col size="2">{{m.qte}}</ion-col>
+          <ion-col size="3" *ngIf="m.payment=='Crédit'" style="background: yellow;">{{m.cout}} {{m.devise}}</ion-col>
+          <ion-col size="3" *ngIf="m.payment=='Cash'">{{m.cout}} {{m.devise}}</ion-col>
+          <ion-col size="3" *ngIf="m.payment==null || m.payment==undefined">{{m.cout}} {{m.devise}}</ion-col>
+          <ion-col size="3" *ngIf="m.payment=='Reglement'" style="background: rgb(0, 81, 255);" (click)="info(m.id)">{{m.cout}} {{m.devise}}</ion-col>
+          <ion-col size="2">{{m.payment}}</ion-col>
+        </ion-row>
+      </div>
+  </div>
+    <ion-row class="titleGrid">
+      Mouvement Extra-ordinaire
+    </ion-row>
+    <div *ngFor="let m of mouv">
+
+    <ion-row class="row" *ngIf="m.id==null">
+      <ion-col size="2">{{m.time|date:'d/M/yy'}}</ion-col>
+      <ion-col size="3">{{m.libele}}-<strong>{{m.names}}</strong></ion-col>
+      <ion-col size="2">{{m.qte}}</ion-col>
+      <ion-col size="3">{{m.cout}} {{m.devise}}</ion-col>
+      <ion-col size="2">{{m.payment}}</ion-col>
+    </ion-row>
+    </div>
+
+    <ion-row class="row" style="margin-bottom: 10px;">
+      <ion-col size="6"><center>Total Caisse</center></ion-col>
+      <ion-col size="3" style="background: rgb(90, 90, 90);color:white"><strong>{{caisseAmountD-decaisseAmountD}} $</strong></ion-col>
+      <ion-col size="3" style="background: rgb(90, 90, 90);color:white"><strong>{{caisseAmountF-decaisseAmountF}} Fc</strong></ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

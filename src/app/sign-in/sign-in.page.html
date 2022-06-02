@@ -1,0 +1,75 @@
+<ion-content>
+  <ion-item lines="full">
+    <ion-chip slot="end" color="light" (click)="fx.dismiss()">
+      <ion-label>Fermer</ion-label>
+      <ion-icon name="close" color="danger"></ion-icon>
+    </ion-chip>
+  </ion-item>
+  <ion-card id="container" *ngIf="new==1">
+    <h4 class="title">Nouveau compte Administrateur</h4>
+    <form>  
+      <ion-item lines="full" class="item">
+        <ion-label position="floating"><ion-icon  name="person" color="primary" ></ion-icon>&nbsp;Noms</ion-label>
+        <ion-input type="text" [(ngModel)]="names" name="nom"></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="item">
+        <ion-label position="floating"><ion-icon  name="call" color="primary" ></ion-icon>&nbsp;Numero telephone (ex: 243973472538)</ion-label>
+        <ion-input type="number" [(ngModel)]="phone" name="nom"></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="item">
+        <ion-label position="floating"><ion-icon  name="key" color="primary" ></ion-icon>&nbsp;Mot de passe</ion-label>
+        <ion-input type="password" [(ngModel)]="pass1" name="nom"></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="item">
+        <ion-label position="floating"><ion-icon  name="key" color="primary" ></ion-icon>&nbsp;Repeat votre mot de passe</ion-label>
+        <ion-input type="password" [(ngModel)]="pass2" name="nom"></ion-input>
+      </ion-item>
+      <center>
+        <ion-label color="danger" *ngIf="pass1!=pass2 && pass1!=null && pass2!=null">Mot de passe differents</ion-label><br>
+        <ion-button [disabled]="!pass1 || !pass2 || !names || !phone || pass1!=pass2" (click)="saveAdmin(names,phone,pass1)">Enregistrer</ion-button></center>
+    </form>
+  </ion-card>
+  <ion-card id="container"  *ngIf="new==0">
+    <h4 class="title">Login 
+      <ion-label *ngIf="admin==0"> Maison</ion-label>
+      <ion-label *ngIf="admin==1"> Admin.</ion-label>
+    </h4>
+    <form>  
+      <ion-item lines="full" class="item">
+        <ion-label position="floating" *ngIf="admin==0"><ion-icon  name="home" color="primary" ></ion-icon>&nbsp;Nom de la maison</ion-label>
+        <ion-label position="floating" *ngIf="admin==1"><ion-icon  name="call" color="primary" ></ion-icon>&nbsp;Numero de telephone</ion-label>
+
+        <ion-input type="text" [(ngModel)]="house" name="nom"></ion-input>
+      </ion-item>
+      <ion-item lines="full" class="item">
+        <ion-label position="floating"><ion-icon  name="key" color="primary"></ion-icon>&nbsp; Mot de passe </ion-label>
+        <ion-input type="password" [(ngModel)]="pass" name="nom" style="height: 50%;"></ion-input>
+      </ion-item>
+      <center>
+        <ion-button color="primary" *ngIf='load!=0' (click)="connect(house,pass)" [disabled]=" !house || !pass">Valider</ion-button>
+        <br>
+        <strong *ngIf='load==0'>Chargement....</strong>
+        <ion-item >
+        <!-- <ion-icon name="person"  slot="start"></ion-icon> -->
+        <ion-label slot="start" (click)="new=1">Nouveau Compte ?
+          <p>*Nouvel Administrateur</p>
+        </ion-label>
+
+        <ion-label slot="end" *ngIf="admin==0" (click)="admin=1">
+          Administrateur ?
+          <p>*Creation Maison</p>
+        </ion-label>
+        <ion-label  slot="end" *ngIf="admin==1" (click)="admin=0">
+          Maison ?
+          <p>
+          *Gestion d'une maison 
+          </p>
+        </ion-label>
+
+      </ion-item>
+      </center>
+      
+  </form>
+  </ion-card>
+</ion-content>
+
